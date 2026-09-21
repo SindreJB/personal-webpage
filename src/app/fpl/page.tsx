@@ -1,29 +1,44 @@
-import Link from "next/link";
-import { Suspense } from "react";
-import { FplApiError, parseEntryId } from "@/lib/fpl/api";
-import { analyzeEntry, type Analysis } from "@/lib/fpl/entry";
-import { ALERT_LABEL, deadlineStamp, money, rank, relativeDeadline, timestamp, xp } from "@/lib/fpl/format";
-import { reviewGameweek, type GameweekReview } from "@/lib/fpl/review";
-import FixtureOutlook from "./components/FixtureOutlook";
-import { FixtureLegend } from "./components/Fixtures";
-import Planning from "./components/Planning";
-import PriceWatch from "./components/PriceWatch";
-import ReviewPanel from "./components/ReviewPanel";
-import SquadTable from "./components/SquadTable";
-import TransferPanel, { Watchlist } from "./components/TransferPanel";
-import Verdict from "./components/Verdict";
-import TeamForm from "./TeamForm";
+import Link from 'next/link';
+import { Suspense } from 'react';
+import { FplApiError, parseEntryId } from '@/lib/fpl/api';
+import { analyzeEntry, type Analysis } from '@/lib/fpl/entry';
+import {
+	ALERT_LABEL,
+	deadlineStamp,
+	money,
+	rank,
+	relativeDeadline,
+	timestamp,
+	xp,
+} from '@/lib/fpl/format';
+import { reviewGameweek, type GameweekReview } from '@/lib/fpl/review';
+import FixtureOutlook from './components/FixtureOutlook';
+import { FixtureLegend } from './components/Fixtures';
+import Planning from './components/Planning';
+import PriceWatch from './components/PriceWatch';
+import ReviewPanel from './components/ReviewPanel';
+import SquadTable from './components/SquadTable';
+import TransferPanel, { Watchlist } from './components/TransferPanel';
+import Verdict from './components/Verdict';
+import TeamForm from './TeamForm';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 type SearchParams = { lag?: string; ft?: string; visning?: string };
+
+/**
+ * Standardlaget som brukes når ingen lenke er limt inn. Troppen leses alltid
+ * fra siste ferdigspilte gameweek, slik som
+ * fantasy.premierleague.com/en/entry/5991938/event/[siste runde].
+ */
+const DEFAULT_ENTRY_ID = '5991938';
 
 function Masthead({ view, team }: { view: string; team: string }) {
 	const qs = (v: string) => {
 		const p = new URLSearchParams();
-		if (team) p.set("lag", team);
-		if (v !== "prognose") p.set("visning", v);
-		return `/fpl${p.size ? `?${p.toString()}` : ""}`;
+		if (team) p.set('lag', team);
+		if (v !== 'prognose') p.set('visning', v);
+		return `/fpl${p.size ? `?${p.toString()}` : ''}`;
 	};
 
 	return (
@@ -39,10 +54,10 @@ function Masthead({ view, team }: { view: string; team: string }) {
 			</div>
 			{team ? (
 				<nav className="kk-tabs">
-					<Link className="kk-tab" data-active={view === "prognose"} href={qs("prognose")}>
+					<Link className="kk-tab" data-active={view === 'prognose'} href={qs('prognose')}>
 						Før deadline
 					</Link>
-					<Link className="kk-tab" data-active={view === "oppsummering"} href={qs("oppsummering")}>
+					<Link className="kk-tab" data-active={view === 'oppsummering'} href={qs('oppsummering')}>
 						Etter runden
 					</Link>
 				</nav>
@@ -55,12 +70,13 @@ function Intro() {
 	return (
 		<>
 			<p className="kk-lede">
-				Lim inn lag-ID-en din, så leser krystallkulen troppen din fra det offisielle FPL-API-et og regner ut forventede
-				poeng for de neste seks rundene: kaptein, ellever, ett bytteforslag, prisrisiko og hvem som er i faresonen.
+				Lim inn lag-ID-en din, så leser krystallkulen troppen din fra det offisielle FPL-API-et og
+				regner ut forventede poeng for de neste seks rundene: kaptein, ellever, ett bytteforslag,
+				prisrisiko og hvem som er i faresonen.
 			</p>
 			<p className="kk-lede">
-				Dette er beslutningsstøtte, ikke spådom. Tallene er forventningsverdier med stor spredning — den største
-				usikkerheten er alltid spilletid.
+				Dette er beslutningsstøtte, ikke spådom. Tallene er forventningsverdier med stor spredning — den
+				største usikkerheten er alltid spilletid.
 			</p>
 		</>
 	);
@@ -71,28 +87,30 @@ function Footnotes({ analysis }: { analysis?: Analysis }) {
 		<>
 			<div className="kk-footnote">
 				<h4>Hvordan tallene blir til</h4>
-				Grunnlaget er FPL sitt eget API: spillere, priser, skadestatus, kampprogram og vanskelighetsgrad. Forventede mål
-				og målgivende per 90 minutter regresseres mot et posisjonssnitt, slik at små utvalg ikke får dominere. Lagstyrken
-				bygges fra sesongens data — summen av spillernes forventede mål gir angrepet, keepernes forventede baklengsmål gir
-				forsvaret — regressert mot ligasnittet og justert lett med FPL sin egen vanskelighetsgrad. FPL sluttet nemlig å
-				fylle ut de detaljerte styrkefeltene sine; de står på null. Clean sheets og baklengsmål modelleres som
-				Poisson-fordelinger, det samme gjelder terskelen for defensive contribution. Spilletid vektes mot de fem siste
-				rundene for spillerne i din egen tropp.
+				Grunnlaget er FPL sitt eget API: spillere, priser, skadestatus, kampprogram og
+				vanskelighetsgrad. Forventede mål og målgivende per 90 minutter regresseres mot et
+				posisjonssnitt, slik at små utvalg ikke får dominere. Lagstyrken bygges fra sesongens data —
+				summen av spillernes forventede mål gir angrepet, keepernes forventede baklengsmål gir forsvaret
+				— regressert mot ligasnittet og justert lett med FPL sin egen vanskelighetsgrad. FPL sluttet
+				nemlig å fylle ut de detaljerte styrkefeltene sine; de står på null. Clean sheets og baklengsmål
+				modelleres som Poisson-fordelinger, det samme gjelder terskelen for defensive contribution.
+				Spilletid vektes mot de fem siste rundene for spillerne i din egen tropp.
 				{analysis ? (
 					<>
-						{" "}
-						Til slutt kalibreres hele modellen mot FPL sin egen <em>ep_next</em> for den kommende runden — denne gangen
-						med faktoren {xp(analysis.calibration, 3)}.
+						{' '}
+						Til slutt kalibreres hele modellen mot FPL sin egen <em>ep_next</em> for den kommende runden —
+						denne gangen med faktoren {xp(analysis.calibration, 3)}.
 					</>
 				) : null}
 			</div>
 			<div className="kk-footnote">
 				<h4>Hva den ikke vet</h4>
-				Den kjenner ikke pressekonferanser, treningsmeldinger eller taktiske planer. Skadeinformasjonen er FPL sin egen,
-				og den oppdateres ofte sent. Antall gratis bytter er utledet fra byttehistorikken og kan være feil hvis du har
-				brukt chips på uvanlige måter — du kan overstyre det i skjemaet. Salgsprisene er rekonstruert fra
-				byttehistorikk og prisendring siden sesongstart, ikke hentet fra din egen konto. Prisendringer oppgis som
-				risikonivå fra FPL sin egen projeksjon, ikke som en prosent vi har funnet på selv.
+				Den kjenner ikke pressekonferanser, treningsmeldinger eller taktiske planer. Skadeinformasjonen
+				er FPL sin egen, og den oppdateres ofte sent. Antall gratis bytter er utledet fra
+				byttehistorikken og kan være feil hvis du har brukt chips på uvanlige måter — du kan overstyre
+				det i skjemaet. Salgsprisene er rekonstruert fra byttehistorikk og prisendring siden
+				sesongstart, ikke hentet fra din egen konto. Prisendringer oppgis som risikonivå fra FPL sin
+				egen projeksjon, ikke som en prosent vi har funnet på selv.
 			</div>
 		</>
 	);
@@ -105,8 +123,9 @@ async function Prognosis({ entryId, freeTransfers }: { entryId: number; freeTran
 	return (
 		<>
 			<p className="kk-lede">
-				{analysis.entry.name} — {analysis.entry.player_first_name} {analysis.entry.player_last_name}. Troppen er lest fra{" "}
-				{analysis.sourceEvent.name}, og anbefalingen gjelder {analysis.targetEvent.name}.
+				{analysis.entry.name} — {analysis.entry.player_first_name} {analysis.entry.player_last_name}.
+				Troppen er lest fra {analysis.sourceEvent.name}, og anbefalingen gjelder{' '}
+				{analysis.targetEvent.name}.
 			</p>
 
 			<dl className="kk-stats">
@@ -138,14 +157,14 @@ async function Prognosis({ entryId, freeTransfers }: { entryId: number; freeTran
 				<div className="kk-stat">
 					<dt>Gratis bytter</dt>
 					<dd>{analysis.freeTransfers}</dd>
-					<small>{analysis.freeTransfersIsEstimate ? "estimert fra historikken" : "satt av deg"}</small>
+					<small>{analysis.freeTransfersIsEstimate ? 'estimert fra historikken' : 'satt av deg'}</small>
 				</div>
 			</dl>
 
 			{!beforeDeadline ? (
 				<p className="kk-note" style={{ marginTop: 14 }}>
-					Deadline for {analysis.targetEvent.name} har passert. Anbefalingene under gjelder derfor laget slik det
-					allerede er låst — se «Etter runden» for oppsummeringen.
+					Deadline for {analysis.targetEvent.name} har passert. Anbefalingene under gjelder derfor laget
+					slik det allerede er låst — se «Etter runden» for oppsummeringen.
 				</p>
 			) : null}
 
@@ -240,7 +259,8 @@ async function Retrospective({ entryId }: { entryId: number }) {
 	return (
 		<>
 			<p className="kk-lede">
-				{review.entryName} — {review.event.name}. {review.points} poeng mot et snitt på {review.averageScore}.
+				{review.entryName} — {review.event.name}. {review.points} poeng mot et snitt på{' '}
+				{review.averageScore}.
 			</p>
 			<section className="kk-section">
 				<div className="kk-section-head">
@@ -264,36 +284,47 @@ function ErrorBox({ message }: { message: string }) {
 	);
 }
 
-async function Content({ entryId, view, freeTransfers }: { entryId: number; view: string; freeTransfers?: number }) {
+async function Content({
+	entryId,
+	view,
+	freeTransfers,
+}: {
+	entryId: number;
+	view: string;
+	freeTransfers?: number;
+}) {
 	try {
-		if (view === "oppsummering") return await Retrospective({ entryId });
+		if (view === 'oppsummering') return await Retrospective({ entryId });
 		return await Prognosis({ entryId, freeTransfers });
 	} catch (err) {
 		const message =
 			err instanceof FplApiError && err.status === 404
-				? "FPL kjenner ikke igjen dette lag-ID-et, eller laget har ikke spilt noen runder ennå."
+				? 'FPL kjenner ikke igjen dette lag-ID-et, eller laget har ikke spilt noen runder ennå.'
 				: err instanceof Error
 					? err.message
-					: "Ukjent feil.";
+					: 'Ukjent feil.';
 		return <ErrorBox message={message} />;
 	}
 }
 
 export default async function FplPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
 	const sp = await searchParams;
-	const teamInput = sp.lag ?? "";
-	const entryId = parseEntryId(teamInput);
-	const view = sp.visning === "oppsummering" ? "oppsummering" : "prognose";
+	const teamInput = sp.lag ?? '';
+	const entryId = parseEntryId(teamInput) ?? parseEntryId(DEFAULT_ENTRY_ID);
+	const view = sp.visning === 'oppsummering' ? 'oppsummering' : 'prognose';
 	const ftRaw = Number(sp.ft);
 	const freeTransfers = Number.isInteger(ftRaw) && ftRaw >= 1 && ftRaw <= 5 ? ftRaw : undefined;
 
 	return (
 		<main className="kk">
-			<Masthead view={view} team={teamInput} />
-			{!entryId ? <Intro /> : null}
+			<Masthead view={view} team={teamInput || DEFAULT_ENTRY_ID} />
+			{!teamInput ? <Intro /> : null}
 
 			<Suspense fallback={null}>
-				<TeamForm initialTeam={teamInput} initialFreeTransfers={freeTransfers ? String(freeTransfers) : ""} />
+				<TeamForm
+					initialTeam={teamInput || DEFAULT_ENTRY_ID}
+					initialFreeTransfers={freeTransfers ? String(freeTransfers) : ''}
+				/>
 			</Suspense>
 
 			{teamInput && !entryId ? (
