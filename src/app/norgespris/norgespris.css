@@ -12,6 +12,10 @@
   margin: 0 auto;
   padding: 18px 18px 90px;
 
+  /* Uten denne tegner nettleseren sine egne kontroller — nedtrekkslista i
+     select, datosegmentene — i lys drakt på svart bakgrunn. */
+  color-scheme: dark;
+
   /* Kategoriske slott, steget for mørk flate og validert mot #000. */
   --np-series-1: #3987e5;
   --np-series-2: #d95926;
@@ -104,9 +108,210 @@
 
 .np-controls select:focus-visible,
 .np-controls input:focus-visible,
-.np-toggle:focus-visible {
+.np-toggle:focus-visible,
+.np-cal-open:focus-visible,
+.np-cal button:focus-visible {
   outline: 2px solid var(--np-series-1);
   outline-offset: 2px;
+}
+
+/* --- datofelt med egen kalender ---------------------------------- */
+
+.np-datefield {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.np-datefield-label {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Input og kalenderknapp deler én ramme, så det leses som ett felt. */
+.np-datefield-row {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--np-hairline);
+}
+
+.np-dateinput {
+  flex: 1;
+  min-width: 0;
+  background: #000;
+  color: var(--ink);
+  border: 0;
+  padding: 9px 10px;
+  font-family: var(--np-sans);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Vi tegner vår egen kalenderknapp, så nettleserens ikon skal vekk —
+   det er dette ikonet som ellers blir svart på svart. */
+.np-dateinput::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.np-dateinput::-webkit-inner-spin-button,
+.np-dateinput::-webkit-clear-button {
+  display: none;
+}
+
+.np-cal-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  flex: none;
+  background: none;
+  border: 0;
+  border-left: 1px solid var(--np-hairline);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.np-cal-open:hover,
+.np-cal-open[aria-expanded="true"] {
+  background: var(--ink);
+  color: #000;
+}
+
+.np-cal {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 276px;
+  max-width: calc(100vw - 32px);
+  padding: 12px;
+  background: #0d0d0d;
+  border: 1px solid var(--line);
+  font-family: var(--np-sans);
+}
+
+.np-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.np-cal-head strong {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.np-cal-head button {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  background: none;
+  border: 1px solid var(--np-hairline);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.np-cal-head button:hover:not(:disabled) {
+  background: var(--ink);
+  color: #000;
+}
+
+.np-cal-head button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.np-cal-weekdays,
+.np-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.np-cal-weekdays {
+  margin-bottom: 4px;
+}
+
+.np-cal-weekdays span {
+  padding: 3px 0;
+  text-align: center;
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Radene finnes for ARIA-strukturen; layouten er rutenettet over. */
+.np-cal-row {
+  display: contents;
+}
+
+.np-cal-pad {
+  display: block;
+}
+
+.np-cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  font-family: var(--np-sans);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.np-cal-day:hover:not(:disabled) {
+  background: rgba(244, 242, 237, 0.16);
+}
+
+.np-cal-day:disabled {
+  color: #4a4a47;
+  cursor: default;
+}
+
+.np-cal-day[data-selected="true"] {
+  background: var(--np-series-1);
+  color: #fff;
+  font-weight: 600;
+}
+
+.np-cal-foot {
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px solid var(--np-hairline);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.np-cal-foot button {
+  background: none;
+  border: 1px solid var(--np-hairline);
+  color: var(--ink);
+  padding: 5px 11px;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.np-cal-foot button:hover {
+  background: var(--ink);
+  color: #000;
 }
 
 /* --- hero + nøkkeltall ------------------------------------------- */

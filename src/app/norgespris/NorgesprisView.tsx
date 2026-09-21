@@ -23,17 +23,11 @@ import {
   type DayPrice,
   type ZoneId,
 } from "@/lib/strom/norgespris";
+import { todayLocal } from "@/lib/strom/dato";
 import { CumulativeSavingsChart, MonthlyCostChart } from "./SparingChart";
+import DateField from "./DateField";
 
-/** Lokal dato, ikke UTC — rett etter midnatt i Norge er de to forskjellige. */
-function today(): string {
-  const now = new Date();
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const d = String(now.getDate()).padStart(2, "0");
-  return `${now.getFullYear()}-${m}-${d}`;
-}
-
-const TODAY = today();
+const TODAY = todayLocal();
 
 /** Henter månedene parallelt, men med tak, og mater dem inn etter hvert. */
 async function loadZone(
@@ -131,16 +125,13 @@ export default function NorgesprisView() {
           </select>
         </label>
 
-        <label>
-          <span>Startet med Norgespris</span>
-          <input
-            type="date"
-            value={startDate}
-            min={NORGESPRIS_START}
-            max={TODAY}
-            onChange={(e) => setStartDate(e.target.value || DEFAULT_START_DATE)}
-          />
-        </label>
+        <DateField
+          label="Startet med Norgespris"
+          value={startDate}
+          min={NORGESPRIS_START}
+          max={TODAY}
+          onChange={setStartDate}
+        />
 
         <label>
           <span>Årsforbruk (kWh)</span>
