@@ -1,0 +1,455 @@
+/* ---------------------------------------------------------------
+   Norgespris index (/norgespris)
+   Samme svarte papir og tynne linjer som resten av siden. Alt inni
+   figurene står i systemsans — tall skal leses, ikke dekorere.
+   --------------------------------------------------------------- */
+
+.np {
+  min-height: 100svh;
+  background: #000;
+  color: var(--ink);
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 18px 18px 90px;
+
+  /* Kategoriske slott, steget for mørk flate og validert mot #000. */
+  --np-series-1: #3987e5;
+  --np-series-2: #d95926;
+  --np-grid: #2c2c2a;
+  --np-baseline: #383835;
+  --np-muted: #898781;
+  --np-hairline: rgba(244, 242, 237, 0.22);
+  --np-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.np a:hover {
+  text-decoration: underline;
+}
+
+/* --- masthead ---------------------------------------------------- */
+
+.np-masthead {
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.np-back {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.np-kicker {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 26px 0 0;
+}
+
+.np-masthead h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(38px, 7vw, 86px);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  margin: 6px 0 0;
+}
+
+.np-lede {
+  max-width: 54ch;
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 600;
+  line-height: 1.32;
+  margin: 14px 0 0;
+}
+
+/* --- kontroller -------------------------------------------------- */
+
+.np-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.np-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.np-controls span {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.np-controls select,
+.np-controls input {
+  width: 100%;
+  background: #000;
+  color: var(--ink);
+  border: 1px solid var(--np-hairline);
+  border-radius: 0;
+  padding: 9px 10px;
+  font-family: var(--np-sans);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.np-controls select:focus-visible,
+.np-controls input:focus-visible,
+.np-toggle:focus-visible {
+  outline: 2px solid var(--np-series-1);
+  outline-offset: 2px;
+}
+
+/* --- hero + nøkkeltall ------------------------------------------- */
+
+.np-hero {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.3fr);
+  gap: 26px;
+  align-items: end;
+  padding: 30px 0 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.np-stat-label,
+.np-stats dt {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+
+.np-hero-figure {
+  font-family: var(--np-sans);
+  font-size: clamp(48px, 8vw, 92px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  margin: 8px 0 0;
+}
+
+.np-hero-figure span {
+  font-size: 0.34em;
+  font-weight: 500;
+  margin-left: 0.22em;
+  color: var(--muted);
+}
+
+.np-stat-sub {
+  max-width: 34ch;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+
+.np-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 0;
+}
+
+.np-stats dd {
+  font-family: var(--np-sans);
+  font-size: clamp(19px, 2.2vw, 27px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 5px 0 0;
+}
+
+.np-stats p {
+  font-size: 12px;
+  line-height: 1.25;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+/* --- figurer ----------------------------------------------------- */
+
+.np-figure {
+  margin: 0;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.np-figcap h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(22px, 2.6vw, 31px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.np-figcap p {
+  max-width: 62ch;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+
+.np-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 14px;
+  font-family: var(--np-sans);
+  font-size: 12px;
+}
+
+.np-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.np-legend i,
+.np-tooltip i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.np-plot {
+  position: relative;
+  margin-top: 18px;
+}
+
+.np-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--np-sans);
+}
+
+/* Skriftstørrelsene settes i viewBox-enheter fra komponenten, så teksten
+   holder seg like stor på skjermen uansett hvor bred SVG-en skaleres. */
+.np-tick,
+.np-axis {
+  fill: var(--np-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.np-peak,
+.np-endlabel {
+  fill: var(--ink);
+  font-family: var(--np-sans);
+  font-weight: 600;
+}
+
+.np-hit {
+  cursor: crosshair;
+}
+
+/* --- tooltip ----------------------------------------------------- */
+
+.np-tooltip {
+  position: absolute;
+  z-index: 3;
+  min-width: 212px;
+  padding: 11px 13px;
+  background: #0d0d0d;
+  border: 1px solid var(--np-hairline);
+  font-family: var(--np-sans);
+  pointer-events: none;
+}
+
+.np-tooltip strong {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+.np-tip-meta {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.np-tooltip dl {
+  margin: 9px 0 0;
+  display: grid;
+  gap: 5px;
+}
+
+.np-tooltip dl > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 12px;
+}
+
+.np-tooltip dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+}
+
+.np-tooltip dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.np-tip-sum {
+  padding-top: 5px;
+  border-top: 1px solid var(--np-hairline);
+}
+
+.np-tip-sum dt,
+.np-tip-sum dd {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.np-tip-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 7px 0 0;
+}
+
+/* --- tabell ------------------------------------------------------ */
+
+.np-tablewrap {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.np-toggle {
+  background: #000;
+  color: var(--ink);
+  border: 1px solid var(--np-hairline);
+  padding: 8px 14px;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.np-toggle:hover {
+  background: var(--ink);
+  color: #000;
+}
+
+.np-table {
+  width: 100%;
+  margin-top: 18px;
+  border-collapse: collapse;
+  font-family: var(--np-sans);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.np-table caption {
+  max-width: 70ch;
+  text-align: left;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.np-table th,
+.np-table td {
+  padding: 7px 10px 7px 0;
+  text-align: right;
+  border-bottom: 1px solid var(--np-grid);
+  white-space: nowrap;
+}
+
+.np-table thead th {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom-color: var(--np-baseline);
+}
+
+.np-table th:first-child,
+.np-table thead th:first-child {
+  text-align: left;
+}
+
+.np-row-dim {
+  color: var(--muted);
+}
+
+/* --- noter ------------------------------------------------------- */
+
+.np-notes {
+  padding-top: 28px;
+}
+
+.np-notes h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.np-notes ul {
+  max-width: 74ch;
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 9px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.np-source {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 18px;
+}
+
+.np-loading,
+.np-error {
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 22px 0 0;
+}
+
+.np-error {
+  color: #e66767;
+}
+
+@media (max-width: 860px) {
+  .np-hero {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .np-stats {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .np-tablewrap {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .np-tooltip {
+    min-width: 172px;
+    max-width: 78%;
+    padding: 9px 11px;
+  }
+}

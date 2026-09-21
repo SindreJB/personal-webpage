@@ -1,9 +1,8 @@
 const socials = [
-  { name: "github", handle: "@yourname", url: "https://github.com", bg: "bg-white" },
-  { name: "twitter / x", handle: "@yourname", url: "https://x.com", bg: "bg-cyber" },
-  { name: "instagram", handle: "@yourname", url: "https://instagram.com", bg: "bg-bubblegum" },
-  { name: "linkedin", handle: "you", url: "https://linkedin.com", bg: "bg-violet text-white" },
-  { name: "email", handle: "you@example.com", url: "mailto:you@example.com", bg: "bg-lime" },
+  { name: "github", handle: "@sindrejb", url: "https://github.com/sindrejb", bg: "bg-white" },
+  { name: "instagram", handle: "@sindrejentoft", url: "https://instagram.com/sindrejentoft", bg: "bg-bubblegum" },
+  { name: "linkedin", handle: "Sindre Jentoft Bøe", url: "https://www.linkedin.com/in/sindre-jentoft-b%C3%B8e", bg: "bg-violet text-white" },
+  { name: "email", handle: "sindre.jentoft.boe@hotmail.no", url: "mailto:sindre.jentoft.boe@hotmail.no", bg: "bg-lime" },
 ];
 
 export default function SocialsPage() {

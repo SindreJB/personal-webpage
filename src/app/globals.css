@@ -89,6 +89,75 @@ a {
   text-decoration: underline;
 }
 
+/* --- hamburgermeny i toppen til høyre ---------------------------- */
+
+.catalog-menu {
+  position: relative;
+}
+
+.catalog-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.catalog-menu-bars {
+  display: grid;
+  gap: 3px;
+}
+
+.catalog-menu-bars i {
+  display: block;
+  width: 19px;
+  height: 2px;
+  background: var(--ink);
+}
+
+.catalog-menu-button:hover .catalog-menu-word {
+  text-decoration: underline;
+}
+
+.catalog-menu-button[aria-expanded="true"] .catalog-menu-bars i:nth-child(2) {
+  opacity: 0.35;
+}
+
+.catalog-menu-panel {
+  position: absolute;
+  top: calc(100% + 11px);
+  right: 0;
+  z-index: 20;
+  min-width: 194px;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  border: 1px solid var(--line);
+}
+
+.catalog-menu-panel a {
+  padding: 11px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.catalog-menu-panel a + a {
+  border-top: 1px solid var(--line);
+}
+
+.catalog-menu-panel a:hover {
+  background: var(--ink);
+  color: #000;
+  text-decoration: none;
+}
+
 .catalog-grid {
   flex: 1;
   min-height: 0;

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CatalogMenu from "@/components/CatalogMenu";
 
 type Entry = {
   href: string;
@@ -81,13 +82,9 @@ export default function Home() {
             <br className="desktop-break" /> og kom gjerne tilbake senere.
           </em>
         </div>
-        <nav className="catalog-meta" aria-label="Utility links">
-          <a href="mailto:hello@jantelov.no">Info</a>
-          <a href="mailto:hello@jantelov.no">Kontakt</a>
-          <a href="https://github.com/SindreJB" target="_blank" rel="noreferrer">
-            Redux
-          </a>
-        </nav>
+        <div className="catalog-meta">
+          <CatalogMenu />
+        </div>
       </header>
 
       <section className="catalog-grid" aria-label="Site navigation">
