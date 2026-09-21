@@ -1,0 +1,539 @@
+/* ---------------------------------------------------------------
+   Krystallkulen (/fpl)
+   Samme redaksjonelle språk som forsiden: svart papir, tynne linjer,
+   Playfair til display og DM Mono til alt som er tall.
+   --------------------------------------------------------------- */
+
+.kk {
+  min-height: 100svh;
+  background: #000;
+  color: var(--ink);
+  padding: 18px 18px 80px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.kk a:hover {
+  text-decoration: underline;
+}
+
+.kk-kicker {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.kk-masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.kk-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(42px, 7vw, 86px);
+  letter-spacing: -0.06em;
+  line-height: 0.88;
+  margin: 10px 0 0;
+}
+
+.kk-lede {
+  max-width: 48ch;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--muted);
+  margin: 12px 0 0;
+}
+
+.kk-section {
+  margin-top: 42px;
+}
+
+.kk-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.kk-h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  margin: 0;
+}
+
+.kk-note {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Skjema -------------------------------------------------------- */
+
+.kk-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+  margin-top: 24px;
+}
+
+.kk-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.kk-field label {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.kk-input,
+.kk-select {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: "DM Mono", monospace;
+  font-size: 14px;
+  padding: 10px 12px;
+  min-width: 0;
+}
+
+.kk-input:focus,
+.kk-select:focus {
+  outline: 2px solid var(--ink);
+  outline-offset: -1px;
+}
+
+.kk-input--wide {
+  width: min(430px, 76vw);
+}
+
+.kk-select option {
+  background: #000;
+}
+
+.kk-button {
+  background: var(--ink);
+  color: #000;
+  border: 1px solid var(--ink);
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 11px 20px;
+  cursor: pointer;
+}
+
+.kk-button:hover {
+  background: #000;
+  color: var(--ink);
+}
+
+.kk-button[disabled] {
+  opacity: 0.45;
+  cursor: progress;
+}
+
+/* Nøkkeltall ---------------------------------------------------- */
+
+.kk-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  margin-top: 24px;
+}
+
+.kk-stat {
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 13px 14px 15px;
+}
+
+.kk-stat dt {
+  font-family: "DM Mono", monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 7px;
+}
+
+.kk-stat dd {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.kk-stat small {
+  display: block;
+  margin-top: 5px;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* Dommen -------------------------------------------------------- */
+
+.kk-verdict {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 22px;
+}
+
+.kk-card {
+  background: #000;
+  padding: 18px 18px 20px;
+}
+
+.kk-card h3 {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 12px;
+  font-weight: 400;
+}
+
+.kk-card-headline {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin: 0;
+}
+
+.kk-card-sub {
+  font-family: "DM Mono", monospace;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+
+.kk-swap {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  flex-wrap: wrap;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-top: 9px;
+}
+
+.kk-swap .kk-arrow {
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.kk-out {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  color: var(--muted);
+}
+
+/* Tabeller ------------------------------------------------------ */
+
+.kk-scroll {
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.kk-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.kk-table th {
+  text-align: left;
+  font-weight: 400;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.kk-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(244, 242, 237, 0.16);
+  vertical-align: middle;
+}
+
+.kk-table tbody tr:hover td {
+  background: rgba(244, 242, 237, 0.05);
+}
+
+.kk-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.kk-player {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.kk-sub {
+  color: var(--muted);
+  font-size: 10.5px;
+}
+
+.kk-row-bench td {
+  color: var(--muted);
+}
+
+.kk-row-bench .kk-player {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.kk-divider td {
+  padding: 5px 10px;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  background: rgba(244, 242, 237, 0.04);
+}
+
+/* Merker og kamper ---------------------------------------------- */
+
+.kk-tag {
+  display: inline-block;
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  margin-left: 6px;
+  vertical-align: 1px;
+}
+
+.kk-tag--c {
+  background: var(--ink);
+  color: #000;
+  border-color: var(--ink);
+}
+
+.kk-fdr {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  padding: 3px 5px;
+  margin: 1px;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: #f4f2ed;
+}
+
+.kk-fdr-1 { background: #24684f; }
+.kk-fdr-2 { background: #3f7344; }
+.kk-fdr-3 { background: #545049; }
+.kk-fdr-4 { background: #8e4837; }
+.kk-fdr-5 { background: #6f2724; }
+
+.kk-blank {
+  display: inline-flex;
+  min-width: 48px;
+  justify-content: center;
+  padding: 3px 5px;
+  margin: 1px;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+}
+
+/* Varsler ------------------------------------------------------- */
+
+.kk-alerts {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.kk-alert {
+  background: #000;
+  padding: 10px 13px;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  display: flex;
+  gap: 11px;
+  align-items: baseline;
+}
+
+.kk-alert-level {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+  min-width: 54px;
+}
+
+.kk-alert--high .kk-alert-level { color: #e8917f; }
+.kk-alert--medium .kk-alert-level { color: #d8bd7a; }
+.kk-alert--low .kk-alert-level { color: var(--muted); }
+
+/* Diverse ------------------------------------------------------- */
+
+.kk-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 16px;
+}
+
+.kk-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+}
+
+.kk-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(244, 242, 237, 0.16);
+}
+
+.kk-list li:last-child {
+  border-bottom: 0;
+}
+
+.kk-error {
+  border: 1px solid #8e4837;
+  padding: 14px 16px;
+  margin-top: 22px;
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.kk-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+.kk-tab {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.kk-tab[data-active="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #000;
+}
+
+.kk-footnote {
+  margin-top: 54px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 80ch;
+}
+
+.kk-footnote h4 {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.kk-footnote + .kk-footnote {
+  margin-top: 26px;
+}
+
+.kk-back {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.kk-delta-pos { color: #8fc7a4; }
+.kk-delta-neg { color: #e8917f; }
+
+@media (max-width: 720px) {
+  .kk {
+    padding: 14px 14px 64px;
+  }
+
+  .kk-input--wide {
+    width: 100%;
+  }
+
+  .kk-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kk-stat dd {
+    font-size: 22px;
+  }
+}
