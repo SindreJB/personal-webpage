@@ -57,22 +57,27 @@ a {
   align-self: start;
 }
 
-.catalog-intro {
-  max-width: 760px;
-  padding-top: 0;
+/* ASCII-portrettet i headeren. Tegnbredden er 0.6em og linjehøyden 0.8em,
+   forholdet mellom dem ligger som CELL_RATIO i AsciiPortrait.tsx. */
+.catalog-portrait {
+  align-self: start;
+  justify-self: start;
+  overflow: hidden;
+  max-width: 100%;
 }
 
-.catalog-intro p {
-  font-size: clamp(18px, 1.6vw, 26px);
-  font-weight: 600;
-  line-height: 1.12;
-  margin: 0 0 21px;
-}
-
-.catalog-intro em {
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.25;
+.catalog-portrait pre {
+  margin: 0;
+  font-family: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(2.2px, 0.54svh, 4.5px);
+  line-height: 0.8;
+  letter-spacing: 0;
+  white-space: pre;
+  color: var(--ink);
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
 }
 
 .catalog-meta {
@@ -269,18 +274,15 @@ a {
     min-height: 0;
   }
 
-  .catalog-intro {
+  .catalog-portrait {
     grid-column: 1 / -1;
     grid-row: 2;
-    padding-top: 30px;
+    justify-self: center;
+    padding-top: 10px;
   }
 
-  .catalog-intro p {
-    font-size: clamp(17px, 4.7vw, 24px);
-  }
-
-  .catalog-intro em {
-    font-size: 11px;
+  .catalog-portrait pre {
+    font-size: clamp(1.8px, 0.42svh, 3.6px);
   }
 
   .catalog-meta {
@@ -344,9 +346,5 @@ a {
 
   .catalog-tile:nth-child(n + 5) {
     border-bottom: 0;
-  }
-
-  .desktop-break {
-    display: none;
   }
 }

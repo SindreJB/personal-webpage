@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AsciiPortrait from "@/components/AsciiPortrait";
 import CatalogMenu from "@/components/CatalogMenu";
 
 type Entry = {
@@ -70,18 +71,7 @@ export default function Home() {
         <Link href="/" className="catalog-brand">
           Sindre Jentoft Bøe
         </Link>
-        <div className="catalog-intro">
-          <p>
-            Her finner du en liten samling av prosjekter, profiler
-            <br className="desktop-break" /> og andre ting fra Sindre Jentoft Bøe.
-            <br />
-            Velg en rute for å gå videre.
-          </p>
-          <em>
-            Dette er et personlig arkiv. Se deg rundt,
-            <br className="desktop-break" /> og kom gjerne tilbake senere.
-          </em>
-        </div>
+        <AsciiPortrait />
         <div className="catalog-meta">
           <CatalogMenu />
         </div>
