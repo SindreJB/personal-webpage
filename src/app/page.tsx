@@ -45,9 +45,9 @@ const entries: Entry[] = [
 	{
 		href: 'https://studplan.no',
 		number: '⑤',
-		title: 'CV',
-		detail: 'curriculum vitae',
-		className: 'tile-cv',
+		title: 'studplan.no',
+		detail: 'school schedule tool',
+		className: 'tile-studplan',
 		external: true,
 	},
 	{
