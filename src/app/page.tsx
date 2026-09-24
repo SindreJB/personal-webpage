@@ -27,7 +27,7 @@ const entries: Entry[] = [
 		className: 'tile-norgespris',
 	},
 	{
-		href: 'https://www.instagram.com/',
+		href: 'https://www.instagram.com/sindrejentoft',
 		number: '③',
 		title: 'Instagram',
 		detail: '@sindrejentoftboe',
@@ -35,7 +35,7 @@ const entries: Entry[] = [
 		external: true,
 	},
 	{
-		href: 'https://www.linkedin.com/',
+		href: 'https://www.linkedin.com/in/sindre-jentoft-b%C3%B8e-bb76411b3/',
 		number: '④',
 		title: 'LinkedIn',
 		detail: 'professional profile',
