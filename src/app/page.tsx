@@ -20,11 +20,11 @@ const entries: Entry[] = [
 		className: 'tile-fpl',
 	},
 	{
-		href: '/wishlist',
+		href: '/norgespris',
 		number: '②',
-		title: 'Ønskeliste',
-		detail: 'wishlist',
-		className: 'tile-wishlist',
+		title: 'Norgespris index',
+		detail: 'strøm',
+		className: 'tile-norgespris',
 	},
 	{
 		href: 'https://www.instagram.com/',
