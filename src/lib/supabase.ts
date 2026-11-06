@@ -18,25 +18,3 @@ export const supabaseAdmin = () => {
 	if (!url || !serviceKey) throw new Error('Supabase admin env is not configured.');
 	return createClient(url, serviceKey, { auth: { persistSession: false } });
 };
-
-export type WishlistItem = {
-	id: string;
-	url: string;
-	title: string;
-	image_url: string | null;
-	price_amount: number | null;
-	price_currency: string | null;
-	category: string;
-	vendor: string | null;
-	note: string | null;
-	created_at: string;
-};
-
-export type BoughtMark = {
-	id: string;
-	item_id: string;
-	buyer_name: string;
-	created_at: string;
-};
-
-export type ItemWithMark = WishlistItem & { bought_by: string | null };

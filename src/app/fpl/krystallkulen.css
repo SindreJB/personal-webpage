@@ -519,9 +519,556 @@
 .kk-delta-pos { color: #8fc7a4; }
 .kk-delta-neg { color: #e8917f; }
 
+/* Lagplanlegger ------------------------------------------------- */
+
+.kk-planner {
+  margin-top: 28px;
+}
+
+.kk-planner-head {
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  padding: 16px 14px 14px;
+  text-align: center;
+}
+
+.kk-planner .kk-stats {
+  margin-top: 0;
+}
+
+.kk-stat-of {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.kk-planner-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 384px;
+  gap: 18px;
+  align-items: start;
+  margin-top: 14px;
+}
+
+.kk-planner-status {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  min-height: 34px;
+  margin: 0 0 8px;
+}
+
+.kk-planner-status[data-warning="true"] {
+  color: #e8917f;
+}
+
+/* Banen tegnes som et trapes, så den leses som sett fra tribunen. */
+.kk-pitch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 10px 20px;
+}
+
+.kk-pitch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
+  background: repeating-linear-gradient(180deg, #2c7259 0 12.5%, #296a53 12.5% 25%);
+}
+
+.kk-pitch-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.kk-pitch-lines > * {
+  fill: none;
+  stroke: rgba(244, 242, 237, 0.75);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.kk-pitch-row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.kk-slot {
+  position: relative;
+  flex: 0 1 136px;
+  min-width: 0;
+}
+
+.kk-slot-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: grab;
+  user-select: none;
+  outline-offset: 2px;
+}
+
+.kk-slot-card:active {
+  cursor: grabbing;
+}
+
+.kk-slot-kit {
+  position: relative;
+  display: block;
+  height: 54px;
+  margin-bottom: -2px;
+}
+
+.kk-kit {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+.kk-shirt {
+  display: block;
+  height: 100%;
+  width: auto;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+}
+
+.kk-status-flag {
+  position: absolute;
+  top: -2px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 14px;
+  text-align: center;
+  color: #000;
+}
+
+.kk-status-flag--doubt { background: #d8bd7a; }
+.kk-status-flag--out { background: #e8917f; }
+
+.kk-armband {
+  position: absolute;
+  top: -1px;
+  left: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  background: var(--ink);
+  color: #000;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 14px;
+  text-align: center;
+}
+
+.kk-armband--captain {
+  background: #000;
+  color: var(--ink);
+}
+
+.kk-plate {
+  width: 100%;
+  background: var(--ink);
+  color: #111;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.kk-plate-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 3px 5px 2px;
+}
+
+.kk-plate-name {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kk-plate-price {
+  flex: 0 0 auto;
+  font-family: "DM Mono", monospace;
+  font-size: 9.5px;
+  color: #555;
+}
+
+.kk-xp-cells {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 1px;
+}
+
+.kk-xp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 3px 1px 2px;
+  font-family: "DM Mono", monospace;
+  color: #111;
+  min-width: 0;
+}
+
+.kk-xp strong {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.kk-xp small {
+  font-size: 8px;
+  line-height: 1.25;
+  white-space: nowrap;
+  color: #333;
+}
+
+.kk-xp-1 { background: #efb2b8; }
+.kk-xp-2 { background: #f6dbda; }
+.kk-xp-3 { background: #eee8db; }
+.kk-xp-4 { background: #d3e8dc; }
+.kk-xp-5 { background: #8fcfb3; }
+
+/* C og V vises når du holder over eller har valgt spilleren. */
+.kk-slot-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 2px;
+  visibility: hidden;
+}
+
+.kk-slot:hover .kk-slot-actions,
+.kk-slot:focus-within .kk-slot-actions,
+.kk-slot[data-selected="true"] .kk-slot-actions {
+  visibility: visible;
+}
+
+.kk-slot-actions button {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid #000;
+  background: var(--ink);
+  color: #000;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.kk-slot-actions button:hover {
+  background: #000;
+  color: var(--ink);
+}
+
+.kk-slot[data-selected="true"] .kk-plate {
+  outline: 2px dashed #d8bd7a;
+  outline-offset: 1px;
+}
+
+.kk-slot[data-drop="legal"] .kk-plate {
+  outline: 2px solid #d8bd7a;
+  outline-offset: 1px;
+}
+
+.kk-slot[data-drop="legal"][data-hovered="true"] .kk-plate {
+  outline-width: 4px;
+}
+
+.kk-slot[data-drop="illegal"] {
+  opacity: 0.4;
+}
+
+.kk-bench {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 10px;
+  background: #12382b;
+}
+
+.kk-bench-spot {
+  flex: 0 1 136px;
+  min-width: 0;
+  text-align: center;
+}
+
+.kk-bench-spot .kk-slot {
+  flex: none;
+  text-align: left;
+}
+
+.kk-pool-label {
+  display: block;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.kk-planner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.kk-planner-actions .kk-note {
+  margin-left: auto;
+}
+
+.kk-button--ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.kk-button--ghost:hover {
+  background: var(--ink);
+  color: #000;
+}
+
+.kk-planned-transfers {
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+/* Spillerlista */
+
+.kk-pool {
+  border: 1px solid var(--line);
+  padding: 14px;
+}
+
+.kk-pool-filters {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.kk-tabs--flush {
+  margin-top: 0;
+  gap: 4px;
+}
+
+.kk-tabs--flush .kk-tab {
+  flex: 1;
+  padding: 6px 2px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.kk-tabs--flush .kk-tab[data-active="true"] {
+  background: var(--ink);
+}
+
+.kk-range {
+  width: 100%;
+  accent-color: var(--ink);
+}
+
+.kk-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.kk-check input {
+  accent-color: var(--ink);
+}
+
+.kk-pool-row {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 28px 126px 30px;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 6px 6px 0;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  border-bottom: 1px solid rgba(244, 242, 237, 0.16);
+  cursor: grab;
+  user-select: none;
+}
+
+.kk-pool-row:active {
+  cursor: grabbing;
+}
+
+.kk-pool-row:hover {
+  background: rgba(244, 242, 237, 0.05);
+}
+
+.kk-pool-row--head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0 6px 5px 0;
+  background: #000;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom-color: var(--line);
+  cursor: default;
+}
+
+.kk-pool-row--head:hover {
+  background: #000;
+}
+
+.kk-pool-row[data-owned="true"] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.kk-pool-row[data-selected="true"] {
+  outline: 2px dashed #d8bd7a;
+  outline-offset: -2px;
+}
+
+.kk-pool-row .kk-kit {
+  height: 34px;
+}
+
+.kk-pool-row .kk-shirt {
+  height: 34px;
+}
+
+.kk-pool-row .kk-status-flag {
+  right: -2px;
+}
+
+.kk-pool-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.kk-pool-name .kk-player {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kk-pool-name .kk-sub {
+  font-size: 9.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kk-pool-list {
+  max-height: 620px;
+  margin-top: 14px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
+}
+
+.kk-pool-more {
+  margin: 8px 0 0;
+}
+
+/* Hele tabellen, foldet sammen under planleggeren */
+
+.kk-details > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.kk-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.kk-details > summary .kk-h2::before {
+  content: "+ ";
+  font-family: "DM Mono", monospace;
+  font-weight: 400;
+}
+
+.kk-details[open] > summary .kk-h2::before {
+  content: "− ";
+}
+
+@media (max-width: 1040px) {
+  .kk-planner-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kk-pool-list {
+    max-height: 480px;
+  }
+}
+
 @media (max-width: 720px) {
   .kk {
     padding: 14px 14px 64px;
+  }
+
+  /* Fem spillere skal få plass i bredden på en telefon: kampene vises i lista under. */
+  .kk-pitch {
+    gap: 8px;
+    padding: 10px 2px 14px;
+  }
+
+  .kk-pitch-row,
+  .kk-bench {
+    gap: 2px;
+  }
+
+  .kk-bench {
+    padding: 8px 2px;
+  }
+
+  .kk-slot-kit {
+    height: 38px;
+  }
+
+  .kk-plate-price,
+  .kk-slot .kk-xp small {
+    display: none;
+  }
+
+  .kk-plate-head {
+    padding: 2px;
+  }
+
+  .kk-plate-name {
+    font-size: 10.5px;
+  }
+
+  .kk-slot .kk-xp strong {
+    font-size: 9.5px;
+  }
+
+  .kk-planner-actions .kk-note {
+    margin-left: 0;
   }
 
   .kk-input--wide {

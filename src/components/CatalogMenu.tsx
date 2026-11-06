@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const items = [
 	{ href: 'mailto:hello@jantelov.no', label: 'Kontakt', external: true },
-	{ href: '/wishlist', label: 'Ønskeliste', external: false },
+	{ href: '/onske', label: 'Ønskebrønnen', external: false },
 ];
 
 export default function CatalogMenu() {

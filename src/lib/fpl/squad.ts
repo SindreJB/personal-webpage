@@ -15,11 +15,14 @@ export type SquadPlayer = PlayerProjection & {
 
 export type Formation = { DEF: number; MID: number; FWD: number };
 
-export type BestEleven = {
-	starters: SquadPlayer[];
-	bench: SquadPlayer[];
+/** Det ellever-utvalget trenger å vite. Planleggeren sender inn en slankere type enn `SquadPlayer`. */
+type LineupPlayer = Pick<PlayerProjection, "id" | "position" | "xp">;
+
+export type BestEleven<Player extends LineupPlayer = SquadPlayer> = {
+	starters: Player[];
+	bench: Player[];
 	/** Reservekeeper kommer alltid først på benken i FPL. */
-	benchGoalkeeper: SquadPlayer | null;
+	benchGoalkeeper: Player | null;
 	formation: Formation;
 	formationLabel: string;
 	startersXp: number;
@@ -34,13 +37,17 @@ for (let d = 3; d <= 5; d++) {
 	}
 }
 
+export function isValidFormation(formation: Formation): boolean {
+	return VALID_FORMATIONS.some((f) => f.DEF === formation.DEF && f.MID === formation.MID && f.FWD === formation.FWD);
+}
+
 /** Salgspris etter FPL-regelen: kjøpspris + gulv(halv gevinst). */
 export function sellingPriceFor(purchasePrice: number, nowCost: number): number {
 	if (nowCost <= purchasePrice) return nowCost;
 	return purchasePrice + Math.floor((nowCost - purchasePrice) / 2);
 }
 
-function byPosition(players: SquadPlayer[], pos: PositionShort) {
+function byPosition<Player extends LineupPlayer>(players: Player[], pos: PositionShort) {
 	return players.filter((p) => p.position === pos);
 }
 
@@ -48,14 +55,14 @@ function byPosition(players: SquadPlayer[], pos: PositionShort) {
  * Velger elleveren som maksimerer forventede poeng for én gameweek, over alle
  * lovlige formasjoner. Med 15 spillere er uttømmende søk trivielt billig.
  */
-export function pickBestEleven(squad: SquadPlayer[], slot = 0): BestEleven {
-	const xpAt = (p: SquadPlayer) => p.xp[slot] ?? 0;
+export function pickBestEleven<Player extends LineupPlayer>(squad: Player[], slot = 0): BestEleven<Player> {
+	const xpAt = (p: Player) => p.xp[slot] ?? 0;
 	const keepers = byPosition(squad, "GKP").sort((a, b) => xpAt(b) - xpAt(a));
 	const defs = byPosition(squad, "DEF").sort((a, b) => xpAt(b) - xpAt(a));
 	const mids = byPosition(squad, "MID").sort((a, b) => xpAt(b) - xpAt(a));
 	const fwds = byPosition(squad, "FWD").sort((a, b) => xpAt(b) - xpAt(a));
 
-	let best: BestEleven | null = null;
+	let best: BestEleven<Player> | null = null;
 
 	for (const f of VALID_FORMATIONS) {
 		if (defs.length < f.DEF || mids.length < f.MID || fwds.length < f.FWD || keepers.length < 1) continue;
@@ -96,7 +103,7 @@ export function pickBestEleven(squad: SquadPlayer[], slot = 0): BestEleven {
 
 const ORDER: Record<PositionShort, number> = { GKP: 0, DEF: 1, MID: 2, FWD: 3 };
 
-function sortStarters(players: SquadPlayer[]) {
+function sortStarters<Player extends LineupPlayer>(players: Player[]) {
 	return [...players].sort((a, b) => ORDER[a.position] - ORDER[b.position] || (b.xp[0] ?? 0) - (a.xp[0] ?? 0));
 }
 
@@ -115,10 +122,13 @@ export type CaptainAdvice = {
  * Kaptein velges på forventede poeng, men et valg med lav startsjanse straffes
  * hardt: en kaptein som ikke spiller koster dobbelt.
  */
+export function captainScore(player: Pick<PlayerProjection, "xp" | "availabilityNext">, slot = 0): number {
+	return (player.xp[slot] ?? 0) * (0.6 + 0.4 * player.availabilityNext);
+}
+
 export function chooseCaptain(starters: SquadPlayer[], slot = 0): CaptainAdvice | null {
 	if (!starters.length) return null;
-	const score = (p: SquadPlayer) => (p.xp[slot] ?? 0) * (0.6 + 0.4 * p.availabilityNext);
-	const ranked = [...starters].sort((a, b) => score(b) - score(a));
+	const ranked = [...starters].sort((a, b) => captainScore(b, slot) - captainScore(a, slot));
 	const captain = ranked[0];
 	const viceCaptain = ranked[1] ?? null;
 	const currentCaptain = starters.find((p) => p.isCaptain) ?? null;

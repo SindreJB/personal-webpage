@@ -1,6 +1,6 @@
 # 💾 personal-site
 
-Playful Y2K personal site: landing, projects, wishlist (with auto-scraping + claim-bought feature), *krystallkulen* (Fantasy Premier League decision support), apartment moodboard, CV, socials.
+Playful Y2K personal site: landing, projects, *ønskebrønnen* (private wishlist — no ads, no tracking), *krystallkulen* (Fantasy Premier League decision support), apartment moodboard, CV, socials.
 
 **Stack:** Next.js 15 (App Router) · TypeScript · Tailwind · Supabase · Vercel
 
@@ -17,12 +17,12 @@ pnpm dev
 ## supabase setup (5 min)
 
 1. Create a project at [supabase.com](https://supabase.com).
-2. In **SQL Editor**, paste `supabase/schema.sql` and run it. For `/fpl`, also run `supabase/fpl_schema.sql` (optional — the page works without it, it just can't grade its own forecasts afterwards).
+2. In **SQL Editor**, paste `supabase/schema.sql` and run it. For `/fpl`, also run `supabase/fpl_schema.sql` (optional — the page works without it, it just can't grade its own forecasts afterwards). For `/onske`, run `supabase/onske_schema.sql`.
 3. In **Settings → API**, grab:
    - `Project URL` → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon public` key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `service_role` key → `SUPABASE_SERVICE_ROLE_KEY` (keep secret!)
-4. Make up a long random string for `WISHLIST_ADMIN_KEY`. You type this whenever you add a wishlist item — it stops randos from adding to your list.
+4. Make up two long random strings for `ONSKE_OWNER_KEY` (your login for the well) and `ONSKE_SECRET` (signs owner cookies and reservation receipts).
 
 ## deploy to vercel
 
@@ -33,27 +33,32 @@ pnpm dev
 
 ---
 
-## how the wishlist works
+## how the ønkewell (`/onske`) works
 
-**Adding items** (you only):
-- Open `/wishlist`, click `＋ add item`, paste a product URL, enter your `WISHLIST_ADMIN_KEY`.
-- Server fetches the page and parses OG/Twitter/JSON-LD tags for title, image, price, currency.
-- Category is inferred from keywords; you can override before submitting.
+A private wish well — the anti-onskeskyen: no ads, no tracking, no accounts.
 
-**Visitors claiming items**:
-- Anyone can hit `I'll get this →`, type their name, confirm.
-- One claim per item (DB unique constraint) — duplicates are blocked at the source.
-- Cards turn grayscale + show "claimed by X".
+**The one rule:** the well is dark. The owner can see *that* something is reserved, but never *by whom*. Visitors see each other's names so nobody double-buys.
 
-**Filters** (live, client-side):
-- search · category · status (available/claimed) · max price · sort
+**Adding wishes** (owner only):
+- Log in once with `ONSKE_OWNER_KEY` → you get a signed, httpOnly cookie (30 days).
+- Paste a product URL; the server scrapes OG/Twitter/JSON-LD for title, image, price, currency. Category is inferred, note field for sizes etc.
+
+**Reserving** (visitors, no login):
+- Hit `dette får jeg til →`, type your name, done. The reservation is signed with `ONSKE_SECRET` (HMAC) — the signature doubles as your receipt and lets you undo later.
+- One reservation per wish (DB unique constraint).
+
+**Privacy:**
+- No third-party requests, no analytics, no ads. The only cookie is the owner's.
+- Images are proxied through Next (`unoptimized` — no transformation, no caching of your visitors' data).
+
+**Filters** (live, client-side): search · category · status · max price · sort.
 
 ## tweaking
 
 - **Category list / keywords:** `src/lib/scrape.ts` → `CATEGORY_KEYWORDS`.
 - **Aesthetic palette:** `tailwind.config.ts` → `colors`.
 - **Marquee text, landing tiles:** `src/app/page.tsx`.
-- **Multiple claims per item?** Drop the `unique (item_id)` line in `schema.sql`.
+- **Multiple reservations per wish?** Drop the `unique (wish_id)` line in `onske_schema.sql`.
 
 ## known limits
 
@@ -76,6 +81,7 @@ official (undocumented, unguaranteed) FPL API — no login, no stored team.
 | `projection.ts` | minutes model, per-90 rates, Poisson clean sheets/DefCon → expected points per gameweek |
 | `squad.ts` | best XI over every legal formation, captain, bench order, selling prices |
 | `transfers.ts` | single and greedy double transfer search, scored on the starting XI over the horizon |
+| `planner.ts` | rules behind the drag-and-drop team planner: legal moves, bank, team value, transfers used, plan saved in the browser |
 | `review.ts` | post-gameweek: actual vs. forecast, bench regret, captaincy cost |
 | `store.ts` | optional Supabase snapshots so forecasts can be graded later |
 

@@ -2,8 +2,8 @@ import type { Analysis } from "@/lib/fpl/entry";
 import { money, percent, signed, xp } from "@/lib/fpl/format";
 
 /**
- * Konklusjonen, øverst. Alt under dette er begrunnelsen — og den skal kunne
- * motsi konklusjonen uten at siden faller fra hverandre.
+ * Konklusjonen, rett under planleggeren. Alt under dette er begrunnelsen — og den
+ * skal kunne motsi konklusjonen uten at siden faller fra hverandre.
  */
 export default function Verdict({ analysis }: { analysis: Analysis }) {
 	const { captain, bestEleven, transfers, lineup } = analysis;

@@ -40,7 +40,7 @@ export type TransferAdvice = {
 const DECAY = 0.93;
 /** Under dette er gevinsten for liten til å bruke et bytte på. */
 const HOLD_THRESHOLD = 1.2;
-const HIT_COST = 4;
+export const HIT_COST = 4;
 
 function horizonValue(squad: SquadPlayer[], slots: number): { total: number; next: number } {
 	let total = 0;
@@ -72,7 +72,7 @@ function clubCounts(squad: { teamId: number }[]) {
 }
 
 /** Spillere det aldri gir mening å foreslå: sluttet i klubben, langtidsskadet, ikke valgbare. */
-function isSelectable(p: PlayerProjection) {
+export function isSelectable(p: PlayerProjection) {
 	if (p.status === "u") return false;
 	if (p.availabilityNext <= 0 && p.xpTotal < 1) return false;
 	return true;

@@ -18,6 +18,7 @@ import Planning from './components/Planning';
 import PriceWatch from './components/PriceWatch';
 import ReviewPanel from './components/ReviewPanel';
 import SquadTable from './components/SquadTable';
+import TeamPlanner from './components/TeamPlanner';
 import TransferPanel, { Watchlist } from './components/TransferPanel';
 import Verdict from './components/Verdict';
 import TeamForm from './TeamForm';
@@ -110,7 +111,9 @@ function Footnotes({ analysis }: { analysis?: Analysis }) {
 				byttehistorikken og kan være feil hvis du har brukt chips på uvanlige måter — du kan overstyre
 				det i skjemaet. Salgsprisene er rekonstruert fra byttehistorikk og prisendring siden
 				sesongstart, ikke hentet fra din egen konto. Prisendringer oppgis som risikonivå fra FPL sin
-				egen projeksjon, ikke som en prosent vi har funnet på selv.
+				egen projeksjon, ikke som en prosent vi har funnet på selv. Laget, banken og byttene gjelder
+				slik de sto ved forrige deadline: FPL viser ikke bytter du allerede har bekreftet for neste
+				runde før den har startet.
 			</div>
 		</>
 	);
@@ -125,41 +128,9 @@ async function Prognosis({ entryId, freeTransfers }: { entryId: number; freeTran
 			<p className="kk-lede">
 				{analysis.entry.name} — {analysis.entry.player_first_name} {analysis.entry.player_last_name}.
 				Troppen er lest fra {analysis.sourceEvent.name}, og anbefalingen gjelder{' '}
-				{analysis.targetEvent.name}.
+				{analysis.targetEvent.name}. Totalt {analysis.entry.summary_overall_points} poeng, plass{' '}
+				{rank(analysis.entry.summary_overall_rank)}.
 			</p>
-
-			<dl className="kk-stats">
-				<div className="kk-stat">
-					<dt>Deadline</dt>
-					<dd>{relativeDeadline(analysis.deadline)}</dd>
-					<small>{deadlineStamp(analysis.deadline)}</small>
-				</div>
-				<div className="kk-stat">
-					<dt>Forventet GW{analysis.targetEvent.id}</dt>
-					<dd>{xp(analysis.bestEleven.startersXp + (analysis.captain?.expectedBonusPoints ?? 0))}</dd>
-					<small>med kapteinsbindet</small>
-				</div>
-				<div className="kk-stat">
-					<dt>{analysis.horizon.length} runder</dt>
-					<dd>{xp(analysis.squadXpTotal)}</dd>
-					<small>uten bytter og kaptein</small>
-				</div>
-				<div className="kk-stat">
-					<dt>Totalpoeng</dt>
-					<dd>{analysis.entry.summary_overall_points}</dd>
-					<small>plass {rank(analysis.entry.summary_overall_rank)}</small>
-				</div>
-				<div className="kk-stat">
-					<dt>Lagverdi</dt>
-					<dd>{money(analysis.teamValue)}</dd>
-					<small>{money(analysis.bank)} i banken</small>
-				</div>
-				<div className="kk-stat">
-					<dt>Gratis bytter</dt>
-					<dd>{analysis.freeTransfers}</dd>
-					<small>{analysis.freeTransfersIsEstimate ? 'estimert fra historikken' : 'satt av deg'}</small>
-				</div>
-			</dl>
 
 			{!beforeDeadline ? (
 				<p className="kk-note" style={{ marginTop: 14 }}>
@@ -167,6 +138,13 @@ async function Prognosis({ entryId, freeTransfers }: { entryId: number; freeTran
 					slik det allerede er låst — se «Etter runden» for oppsummeringen.
 				</p>
 			) : null}
+
+			<TeamPlanner
+				key={analysis.entry.id}
+				data={analysis.planner}
+				gameweekName={analysis.targetEvent.name}
+				deadlineLabel={`${deadlineStamp(analysis.deadline)} (${relativeDeadline(analysis.deadline)})`}
+			/>
 
 			<section className="kk-section">
 				<div className="kk-section-head">
@@ -194,56 +172,70 @@ async function Prognosis({ entryId, freeTransfers }: { entryId: number; freeTran
 			) : null}
 
 			<section className="kk-section">
-				<div className="kk-section-head">
-					<h2 className="kk-h2">Troppen</h2>
-					<span className="kk-note">forventede poeng per runde</span>
-				</div>
-				<SquadTable analysis={analysis} />
-				<div style={{ marginTop: 10 }}>
-					<FixtureLegend />
-				</div>
+				<details className="kk-details">
+					<summary className="kk-section-head">
+						<h2 className="kk-h2">Hele tabellen</h2>
+						<span className="kk-note">
+							{analysis.horizon.length} runder · {xp(analysis.squadXpTotal)} forventet uten bytter og kaptein
+						</span>
+					</summary>
+					<SquadTable analysis={analysis} />
+					<div style={{ marginTop: 10 }}>
+						<FixtureLegend />
+					</div>
+				</details>
 			</section>
 
 			<section className="kk-section">
-				<div className="kk-section-head">
-					<h2 className="kk-h2">Bytter</h2>
-					<span className="kk-note">
-						{analysis.freeTransfers} gratis · {money(analysis.bank)} i banken
-					</span>
-				</div>
-				<TransferPanel analysis={analysis} />
+				<details className="kk-details">
+					<summary className="kk-section-head">
+						<h2 className="kk-h2">Bytter</h2>
+						<span className="kk-note">
+							{analysis.freeTransfers} gratis · {money(analysis.bank)} i banken
+						</span>
+					</summary>
+					<TransferPanel analysis={analysis} />
+				</details>
 			</section>
 
 			<section className="kk-section">
-				<div className="kk-section-head">
-					<h2 className="kk-h2">Kampprogram</h2>
-					<span className="kk-note">klubbene du eier</span>
-				</div>
-				<FixtureOutlook analysis={analysis} />
+				<details className="kk-details">
+					<summary className="kk-section-head">
+						<h2 className="kk-h2">Kampprogram</h2>
+						<span className="kk-note">klubbene du eier</span>
+					</summary>
+					<FixtureOutlook analysis={analysis} />
+				</details>
 			</section>
 
 			<section className="kk-section">
-				<div className="kk-section-head">
-					<h2 className="kk-h2">Pris</h2>
-					<span className="kk-note">FPL sin egen projeksjon for i natt</span>
-				</div>
-				<PriceWatch analysis={analysis} />
+				<details className="kk-details">
+					<summary className="kk-section-head">
+						<h2 className="kk-h2">Pris</h2>
+						<span className="kk-note">FPL sin egen projeksjon for i natt</span>
+					</summary>
+					<PriceWatch analysis={analysis} />
+				</details>
 			</section>
 
 			<section className="kk-section">
-				<div className="kk-section-head">
-					<h2 className="kk-h2">Planlegging</h2>
-					<span className="kk-note">chips og kalender</span>
-				</div>
-				<Planning analysis={analysis} />
+				<details className="kk-details">
+					<summary className="kk-section-head">
+						<h2 className="kk-h2">Planlegging</h2>
+						<span className="kk-note">chips og kalender</span>
+					</summary>
+					<Planning analysis={analysis} />
+				</details>
 			</section>
 
 			<section className="kk-section">
-				<div className="kk-section-head">
-					<h2 className="kk-h2">Verdt å se på</h2>
-					<span className="kk-note">høyest forventet over {analysis.horizon.length} runder</span>
-				</div>
-				<Watchlist analysis={analysis} />
+				<details className="kk-details">
+					<summary className="kk-section-head">
+						<h2 className="kk-h2">Verdt å se på</h2>
+						<span className="kk-note">høyest forventet over {analysis.horizon.length} runder</span>
+					</summary>
+					<Watchlist analysis={analysis} />
+				</details>
 			</section>
 
 			<Footnotes analysis={analysis} />

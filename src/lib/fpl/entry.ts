@@ -1,8 +1,9 @@
 import { getBootstrap, getElementSummaries, getEntry, getEntryHistory, getEntryPicks, getEntryTransfers, getFixtures } from "./api";
 import { averageDifficulty, buildFixtureContext } from "./fixtures";
 import { chipLabel } from "./format";
+import { buildPlannerData, type PlannerData } from "./planner";
 import { projectPlayers, type PlayerProjection } from "./projection";
-import { chooseCaptain, lineupChanges, pickBestEleven, sellingPriceFor, type SquadPlayer } from "./squad";
+import { chooseCaptain, lineupChanges, pickBestEleven, sellingPriceFor, type BestEleven, type SquadPlayer } from "./squad";
 import { adviseTransfers } from "./transfers";
 import type { Bootstrap, BootstrapEvent, EntryHistory, EntryPicks, EntrySummary } from "./types";
 
@@ -35,7 +36,7 @@ export type Analysis = {
 	hoursToDeadline: number;
 	horizon: BootstrapEvent[];
 	squad: SquadPlayer[];
-	bestEleven: ReturnType<typeof pickBestEleven>;
+	bestEleven: BestEleven;
 	captain: ReturnType<typeof chooseCaptain>;
 	lineup: ReturnType<typeof lineupChanges>;
 	transfers: ReturnType<typeof adviseTransfers>;
@@ -58,6 +59,8 @@ export type Analysis = {
 	generatedAt: string;
 	history: EntryHistory;
 	picks: EntryPicks;
+	/** Alt lagplanleggeren trenger i nettleseren. Resten av analysen blir på serveren. */
+	planner: PlannerData;
 };
 
 /**
@@ -72,7 +75,8 @@ export type Analysis = {
  */
 export function estimateFreeTransfers(history: EntryHistory, maxFree: number): number {
 	const chipByEvent = new Map(history.chips.map((c) => [c.event, c.name]));
-	let free = 1;
+	// Før første deadline er byttene ubegrensede. Det første gratis byttet kommer etter den.
+	let free = 0;
 	for (const row of history.current) {
 		const chip = chipByEvent.get(row.event);
 		const chipWasFree = chip === "wildcard" || chip === "freehit";
@@ -323,5 +327,14 @@ export async function analyzeEntry(entryId: number, options: AnalyzeOptions = {}
 		generatedAt: new Date().toISOString(),
 		history,
 		picks,
+		planner: buildPlannerData({
+			entryId,
+			squad,
+			pool: projection.all,
+			ctx,
+			bank,
+			freeTransfers,
+			freeTransfersIsEstimate: options.freeTransfers === undefined,
+		}),
 	};
 }
